@@ -10,17 +10,25 @@
 from random import random
 from sys import stdout
 
+from lib.node import State
+
+class ColorsBook:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 class World():
-    def __init__(self, L, H, P):
+    def __init__(self, L = 100, H = 100, P = 0.3):
         self.L = L
         self.H = H
 
         # the world is represented by an array with one dimension
         self.w = [0 for i in range(L*H)] # initialise every tile to empty (0)
-
-        for pos in self.w:
-            self.column = pos % L
-            self.row = pos % H
 
         # add walls in the first and last columns
         for i in range(H):
@@ -38,9 +46,17 @@ class World():
                 # the starting tile nor the goal tile 
                 if random() < P and not (i == 1 and j == 1) and not (i == H-2 and j == L-2):
                     self.w[i*L+j] = 1
+    
+    def list_available_tiles(self):
+        available_tiles = []
+        for i in range(self.L*self.H):
+            if self.w[i] == 0:
+                available_tiles.append(i)
+        return(available_tiles)
 
      # display the world
     def display(self):
+
         print('')
         carriage = 30 - self.L
         spaces = ' ' * carriage
@@ -50,15 +66,29 @@ class World():
         stdout.write("\033[0;0m")
         for i in range(self.H):
             for j in range(self.L):
+                tile = self.w[i * self.L + j]
                 if (j == 0):
                     if carriage > 0:
                         stdout.write(spaces)
-                if self.w[i * self.L + j] == 0:
+                if tile == State.FREE:
                     stdout.write('.')
-                elif self.w[i * self.L + j] == 1:
-                    stdout.write ("\033[;1m" + "\033[1;31m" )
+                elif tile == State.WALL:
+                    stdout.write (ColorsBook.BOLD)
                     stdout.write('█')
-                    stdout.write("\033[0;0m")
+                    stdout.write(ColorsBook.ENDC)
+                elif tile == State.HEALTHY:
+                    stdout.write(ColorsBook.OKGREEN)
+                    stdout.write('o')
+                    stdout.write(ColorsBook.ENDC)
+                elif tile == State.INFECTED:
+                    stdout.write(ColorsBook.BOLD + ColorsBook.WARNING)
+                    stdout.write('o')
+                    stdout.write(ColorsBook.ENDC)
+                elif tile == State.CURED:
+                    stdout.write(ColorsBook.OKBLUE + ColorsBook.BOLD)
+                    stdout.write('o')
+                    stdout.write(ColorsBook.ENDC)
+
 
             print('')
         
