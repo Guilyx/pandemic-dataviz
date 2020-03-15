@@ -28,29 +28,29 @@ class World():
         self.H = H
 
         # the world is represented by an array with one dimension
-        self.w = [0 for i in range(L*H)] # initialise every tile to empty (0)
+        self.w = [State.FREE for i in range(L*H)] # initialise every tile to empty (0)
 
         # add walls in the first and last columns
         for i in range(H):
-            self.w[i*L] = 1
-            self.w[i*L+L-1] = 1
+            self.w[i*L] = State.WALL
+            self.w[i*L+L-1] = State.WALL
         
         # add walls in the first and last lines
         for j in range(L):
-            self.w[j] = 1
-            self.w[(H-1)*L + j] = 1
+            self.w[j] = State.WALL
+            self.w[(H-1)*L + j] = State.WALL
 
         for i in range(H):
             for j in range(L):
                 # add a wall in this tile with probability P and provided that it is neither
                 # the starting tile nor the goal tile 
                 if random() < P and not (i == 1 and j == 1) and not (i == H-2 and j == L-2):
-                    self.w[i*L+j] = 1
+                    self.w[i*L+j] = State.WALL
     
     def list_available_tiles(self):
         available_tiles = []
         for i in range(self.L*self.H):
-            if self.w[i] == 0:
+            if self.w[i] == State.FREE:
                 available_tiles.append(i)
         return(available_tiles)
 
