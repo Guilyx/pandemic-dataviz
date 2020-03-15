@@ -8,8 +8,10 @@
 '''
 
 from random import random
-from lib.node import Node, State
-from lib.env import World, ColorsBook
+from lib.node import Node
+from lib.state import State
+from lib.env import World
+from lib.colors import ColorsBook
 
 class Pandemic():
     def __init__(self, epochs, population, infectProb, healProb, deathProb, World):

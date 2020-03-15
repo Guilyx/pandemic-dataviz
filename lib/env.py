@@ -10,17 +10,8 @@
 from random import random
 from sys import stdout
 
-from lib.node import State
-
-class ColorsBook:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+from lib.state import State
+from lib.colors import ColorsBook
 
 class World():
     def __init__(self, L = 100, H = 100, P = 0.3):
