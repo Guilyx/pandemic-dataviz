@@ -9,5 +9,7 @@ def main():
     env = World(10, 10, 0.2)
     env.display()
 
+    env.w
+
 if __name__ == "__main__":
     main()

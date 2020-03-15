@@ -30,3 +30,5 @@ class Node():
             print(ColorsBook.WARNING +
                   "Careful, Node class built with wrong type for STATE variable" + ColorsBook.ENDC)
         
+
+    # Get Neighbours
