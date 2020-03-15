@@ -15,7 +15,7 @@ def test_uniqueness():
     # list of positions
     pos = []
     for elem in nodes:
-        pos.append(elem.tile_pos)
+        pos.append(elem.position)
 
     # check uniqueness
     seen = set()
@@ -29,7 +29,7 @@ def test_outofbounds():
     new_node = [Node(State.HEALTHY, i) for i in free_tiles]
 
     for elem in new_node:
-        assert(elem.tile_pos >= 0 and elem.tile_pos <= (env.L*env.H))
+        assert(elem.position >= 0 and elem.position <= (env.L*env.H))
 
 def test_availability():
     env = World(10, 10, 0.2)
@@ -38,4 +38,4 @@ def test_availability():
     new_node = [Node(State.HEALTHY, i) for i in free_tiles]
 
     for elem in new_node:
-        assert(env.w[elem.tile_pos] != State.WALL)
+        assert(env.w[elem.position] != State.WALL)

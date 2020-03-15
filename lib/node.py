@@ -5,18 +5,9 @@ licence : MIT
 brief : a node represent a person
 '''
 
-from lib.env import World, ColorsBook
-
-
-class State():
-    FREE = 0
-    WALL = 1
-    HEALTHY = 2
-    INFECTED = 3
-    CURED = 4
-
-    ALLOWED_= [FREE, WALL, HEALTHY, INFECTED, CURED]
-
+from lib.env import World
+from lib.colors import ColorsBook
+from lib.state import State
 
 class Node():
     def __init__(self, state, position):
