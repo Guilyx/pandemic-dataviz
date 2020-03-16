@@ -37,7 +37,7 @@ def stack_chart():
     for i in range(plague.hardstop+2):
         y = [plague.healthy[:i], plague.cured[:i], plague.infected[:i], plague.dead[:i]]          
         plt.stackplot(x[:i], y, labels=['Unaffected', 'Cured', 'Infected', 'Dead'], colors=pal, alpha=0.4)
-        plague.displayTerminal(0)
+        plague.displayWorldHistory(i)
         if i == 0:
             plt.legend(loc='upper left')
         plt.pause(0.01)
