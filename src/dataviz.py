@@ -19,11 +19,11 @@ from lib.env import World
 def stack_chart():
     env = World(40, 20, 0.2)
     max_pop = len(env.list_available_tiles())
-    pop = int(max_pop*0.7)
+    pop = int(max_pop*0.8)
 
-    deathProbability = 0.04
-    recoverProbability = 0.2
-    infectedProbability = 0.7
+    deathProbability = 0.08
+    recoverProbability = 0.3
+    infectedProbability = 0.75
 
     epochs = 1000
 

@@ -72,14 +72,17 @@ class Pandemic():
         self.healthy.append(self.__getNumberState(State.UNAFFECTED))
 
     def displayStatisticsEpoch(self, epoch):
-        if self.hardstop == 0:
+        if self.hardstop != 0:
             print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
-                epoch+1, self.epochs) + ColorsBook.ENDC)
-        else:
-            progress = epoch+1/self.hardstop*100
+                epoch+1, self.hardstop) + ColorsBook.ENDC)
+            progress = (epoch+1)/self.hardstop*100
             progress = round(progress, 2)
+
             print(("\n- - - - " + ColorsBook.BOLD + "Progress: {:0.2f}%").format(
                 progress, self.hardstop) + ColorsBook.ENDC)
+        else:
+            print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
+                epoch+1, self.hardstop) + ColorsBook.ENDC)
 
         print(("- - - - " +
                ColorsBook.BOLD + ColorsBook.OKGREEN + "Unaffected: {:d}\t" + ColorsBook.ENDC +
@@ -160,10 +163,10 @@ class Pandemic():
         if epoch > self.hardstop and self.hardstop != 0:
             if (self.__getNumberState(State.INFECTED) == 0):
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
-                    "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
+                    "\nCongrats, you survived the Pandemic in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
             elif (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
-                    "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
+                    "\nOops, the whole goddamn population has been decimated in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
 
 
     def spread(self, display=False):
