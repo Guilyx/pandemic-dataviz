@@ -9,7 +9,8 @@
 
 from random import random
 from sys import stdout
-
+import os
+import time
 from lib.state import State
 from lib.colors import ColorsBook
 
@@ -47,7 +48,8 @@ class World():
 
      # display the world
     def display(self):
-
+        time.sleep(1)
+        os.system('clear')
         print('')
         carriage = 30 - self.L
         spaces = ' ' * carriage
@@ -72,7 +74,7 @@ class World():
                     stdout.write('o')
                     stdout.write(ColorsBook.ENDC)
                 elif tile == State.INFECTED:
-                    stdout.write(ColorsBook.BOLD + ColorsBook.WARNING)
+                    stdout.write(ColorsBook.BOLD + ColorsBook.FAIL)
                     stdout.write('o')
                     stdout.write(ColorsBook.ENDC)
                 elif tile == State.CURED:
