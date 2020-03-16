@@ -8,12 +8,16 @@ brief : a node represent a person
 from lib.env import World
 from lib.colors import ColorsBook
 from lib.state import State
+import random
 
 class Node():
     def __init__(self, state, position):
 
         self.state = state
         self.position = position
+        self.time_infected = 0
+        self.virus_gravity = 0
+        self.has_grown = False
 
         if state in State.ALLOWED_:
             pass
@@ -32,7 +36,7 @@ class Node():
             return [] 
 
         if (range_ == 1) :
-            successors = list(filter(lambda x: World.pos_matrix[x] != State.WALL, [i - 1, 
+            successors = list(filter(lambda x: World.pos_matrix[x] != State.WALL and World.pos_matrix[x] != State.FREE, [i - 1, 
                                                                       i + 1, 
                                                                       i - World.L, 
                                                                       i + World.L, 
@@ -44,7 +48,7 @@ class Node():
 
         elif (range_ == 0):
             # look in the four adjacent tiles and keep only those with no wall
-            successors = list(filter(lambda x: World.pos_matrix[x] != 1, [i - 1, 
+            successors = list(filter(lambda x: World.pos_matrix[x] != State.WALL and World.pos_matrix[x] != State.FREE, [i - 1, 
                                                                       i + 1, 
                                                                       i - World.L, 
                                                                       i + World.L]))
