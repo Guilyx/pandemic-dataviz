@@ -60,11 +60,22 @@ class Pandemic():
                 numberState += 1
         return numberState
 
-    def __updateStatistics(self):
+    def __updateStatisticsEpoch(self):
         self.dead.append(self.__getNumberState(State.DEAD))
         self.cured.append(self.__getNumberState(State.CURED))
         self.infected.append(self.__getNumberState(State.INFECTED))
         self.healthy.append(self.__getNumberState(State.HEALTHY))
+
+    def displayStatisticsEpoch(self, epoch):
+        print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
+            epoch+1, self.epochs) + ColorsBook.ENDC)
+
+        print(("- - - - " +
+               ColorsBook.BOLD + ColorsBook.OKGREEN + "Healthy: {:d}\t" + ColorsBook.ENDC +
+               ColorsBook.BOLD + ColorsBook.OKBLUE + "Cured: {:d}\t" + ColorsBook.ENDC +
+               ColorsBook.BOLD + ColorsBook.FAIL + "Infected: {:d}\t" + ColorsBook.ENDC +
+               ColorsBook.HEADER + ColorsBook.BOLD + "Deaths: {:d}\t").format(
+            self.healthy[-1], self.cured[-1], self.infected[-1], self.dead[-1]) + ColorsBook.ENDC)
 
     def __virusGrowth(self, Node):
         if not(Node.has_grown):
@@ -126,21 +137,24 @@ class Pandemic():
                 if self.nodes[elem].state == State.INFECTED:
                     self.__virusGrowth(self.nodes[elem])
 
-    def spread(self):
+    def spread(self, display=True):
         for i in range(self.epochs):
             if i == 0:
                 self.__firstEpoch()
             else:
                 self.__genericEpoch()
             self.__evolve()
-            self.__updateStatistics()
-            self.world.display()
+            self.__updateStatisticsEpoch()
+
+            if display:
+                self.world.display()
+                self.displayStatisticsEpoch(i)
 
             if (self.__getNumberState(State.INFECTED) == 0):
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
                       "Congrats, you survived the Pandemic !" + ColorsBook.ENDC)
                 break
-            if (self.__getNumberState(State.HEALTHY) and self.__getNumberState(State.CURED)):
+            if (self.__getNumberState(State.HEALTHY) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
                       "Oops, the whole goddamn population has been decimated !" + ColorsBook.ENDC)
                 break
