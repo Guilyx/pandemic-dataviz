@@ -157,6 +157,15 @@ class Pandemic():
         self.worldHistory[epoch].display()
         self.displayStatisticsEpoch(epoch)
 
+        if epoch > self.hardstop and self.hardstop != 0:
+            if (self.__getNumberState(State.INFECTED) == 0):
+                print(ColorsBook.OKGREEN + ColorsBook.BOLD +
+                    "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
+            elif (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
+                print(ColorsBook.FAIL + ColorsBook.BOLD +
+                    "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
+
+
     def spread(self, display=False):
         for i in range(self.epochs):
             if i == 0:
@@ -174,12 +183,14 @@ class Pandemic():
             self.worldHistory.append(world_)
 
             if (self.__getNumberState(State.INFECTED) == 0):
-                print(ColorsBook.OKGREEN + ColorsBook.BOLD +
-                      "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
+                if display:
+                    print(ColorsBook.OKGREEN + ColorsBook.BOLD +
+                        "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
                 self.hardstop = i
                 break
-            if (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
-                print(ColorsBook.FAIL + ColorsBook.BOLD +
-                      "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
+            elif (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
+                if display:
+                    print(ColorsBook.FAIL + ColorsBook.BOLD +
+                        "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
                 self.hardstop = i
                 break
