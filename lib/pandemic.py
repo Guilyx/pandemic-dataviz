@@ -71,8 +71,14 @@ class Pandemic():
         self.healthy.append(self.__getNumberState(State.UNAFFECTED))
 
     def displayStatisticsEpoch(self, epoch):
-        print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
-            epoch+1, self.epochs) + ColorsBook.ENDC)
+        if self.hardstop == 0:
+            print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
+                epoch+1, self.epochs) + ColorsBook.ENDC)
+        else:
+            progress = epoch+1/self.hardstop*100
+            progress = round(progress, 2)
+            print(("\n- - - - " + ColorsBook.BOLD + "Progress: {:0.2f}%").format(
+                progress, self.hardstop) + ColorsBook.ENDC)
 
         print(("- - - - " +
                ColorsBook.BOLD + ColorsBook.OKGREEN + "Unaffected: {:d}\t" + ColorsBook.ENDC +
