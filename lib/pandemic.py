@@ -7,7 +7,7 @@
 @brief : Disease spreading class
 '''
 
-from random import random
+import random
 from lib.node import Node
 from lib.state import State
 from lib.env import World
@@ -39,9 +39,15 @@ class Pandemic():
         for i in range(self.population):
             random.shuffle(free_tiles)
             picked_spot = free_tiles.pop()
+            self.world.pos_matrix[picked_spot] = State.HEALTHY
             self.nodes[picked_spot] = Node(State.HEALTHY, picked_spot)
 
-    
+    def evolve(self):
+        for elem in list(self.nodes.keys()):
+            current_node = self.nodes[elem]
+            node_state = current_node.state
+            self.world.pos_matrix[elem] = node_state
+
     def spread(self):
         pass
 
