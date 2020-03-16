@@ -4,10 +4,10 @@ class State():
     WALL = 1
 
     # Node States
-    HEALTHY = 2
+    UNAFFECTED = 2
     INFECTED = 3
     CURED = 4
     DEAD = 5
 
-    ALLOWED_= [FREE, WALL, HEALTHY, INFECTED, CURED, DEAD]
+    ALLOWED_= [FREE, WALL, UNAFFECTED, INFECTED, CURED, DEAD]
 
