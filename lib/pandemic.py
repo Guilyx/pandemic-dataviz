@@ -23,7 +23,8 @@ class Pandemic():
         self.infectProb = infectProb
         self.healProb = healProb
         self.deathProb = deathProb
-        self.world = World
+        self.world = []
+        self.world.append(World)
         self.n_infected = n_infected
 
         self.nodes = dict()
@@ -51,7 +52,7 @@ class Pandemic():
         for i in range(self.population):
             random.shuffle(free_tiles)
             picked_spot = free_tiles.pop()
-            self.world.pos_matrix[picked_spot] = State.UNAFFECTED
+            self.world[0].pos_matrix[picked_spot] = State.UNAFFECTED
             self.nodes[picked_spot] = Node(State.UNAFFECTED, picked_spot)
 
     def __getNumberState(self, state):
@@ -84,14 +85,15 @@ class Pandemic():
             Node.virus_gravity += Node.time_infected * random.random()
             Node.has_grown = True
 
-    def __evolve(self):
+    def __evolve(self, epoch):
+        self.world.append(self.world[epoch-1])
         for elem in list(self.nodes.keys()):
             current_node = self.nodes[elem]
             node_state = current_node.state
             if node_state == State.DEAD:
-                self.world.pos_matrix[elem] = State.FREE
+                self.world[epoch].pos_matrix[elem] = State.FREE
             else:
-                self.world.pos_matrix[elem] = node_state
+                self.world[epoch].pos_matrix[elem] = node_state
 
     def __firstEpoch(self):
         people = list(self.nodes.keys())
@@ -99,10 +101,10 @@ class Pandemic():
             rdn_ = random.choice(people)
             self.nodes[rdn_].state = State.INFECTED
 
-    def __genericEpoch(self):
+    def __genericEpoch(self, epoch):
         for elem in list(self.nodes.keys()):
             neighbours = self.nodes[elem].neighbours(
-                self.spreadRange, self.world)
+                self.spreadRange, self.world[epoch])
             if self.nodes[elem].state == State.INFECTED:
 
                 # Put down the virus evolution flag
@@ -138,27 +140,30 @@ class Pandemic():
                 if self.nodes[elem].state == State.INFECTED:
                     self.__virusGrowth(self.nodes[elem])
 
-    def spread(self, display=True):
+    def displayTerminal(self, epoch):
+        self.world[epoch].display()
+        self.displayStatisticsEpoch(epoch)
+
+    def spread(self, display=False):
         for i in range(self.epochs):
             if i == 0:
                 self.__firstEpoch()
             else:
-                self.__genericEpoch()
+                self.__genericEpoch(i)
 
-            self.__evolve()
+            self.__evolve(i)
             self.__updateStatisticsEpoch()
 
             if display:
-                self.world.display()
-                self.displayStatisticsEpoch(i)
+                self.displayTerminal(i)
 
             if (self.__getNumberState(State.INFECTED) == 0):
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
-                      "Congrats, you survived the Pandemic !" + ColorsBook.ENDC)
+                      "Congrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
                 self.hardstop = i
                 break
             if (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
-                      "Oops, the whole goddamn population has been decimated !" + ColorsBook.ENDC)
+                      "Oops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
                 self.hardstop = i
                 break
