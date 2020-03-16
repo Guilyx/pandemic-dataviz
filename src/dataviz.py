@@ -35,13 +35,16 @@ def stack_chart():
     pal = ["#2ecc71", "#3498db", "#e74c3c", "#9b59b6"]
     
     for i in range(plague.hardstop+2):
-        y = [plague.healthy[:i], plague.cured[:i], plague.infected[:i], plague.dead[:i]]          
-        plt.stackplot(x[:i], y, labels=['Unaffected', 'Cured', 'Infected', 'Dead'], colors=pal, alpha=0.4)
-        plague.displayWorldHistory(i)
-        if i == 0:
-            plt.legend(loc='upper left')
-        plt.pause(0.01)
-        
+        try:
+            y = [plague.healthy[:i], plague.cured[:i], plague.infected[:i], plague.dead[:i]]          
+            plt.stackplot(x[:i], y, labels=['Unaffected', 'Cured', 'Infected', 'Dead'], colors=pal, alpha=0.4)
+            plague.displayWorldHistory(i)
+            if i == 0:
+                plt.legend(loc='upper left')
+            plt.pause(0.01)
+        except KeyboardInterrupt:
+            print("Exiting cleanly...")
+            sys.exit()
     
     plt.show()
 
