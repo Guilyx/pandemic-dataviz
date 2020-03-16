@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib as mpl
-mpl.use('TkAgg')  # or whatever other backend that you want
+mpl.use('TkAgg')  # Change backend ( segfault issue )
 import matplotlib.pyplot as plt
 import seaborn as sns
 import sys
@@ -32,7 +32,7 @@ def stack_chart():
                       recoverProbability, deathProbability, env, 1)
     plague.spread(False)
 
-    x = range(1, epochs+1)
+    x = range(1, plague.hardstop+2)
     y = [plague.healthy, plague.cured, plague.infected, plague.dead]
 
     plt.stackplot(x, y, labels=['Unaffected', 'Cured', 'Infected', 'Dead'])
