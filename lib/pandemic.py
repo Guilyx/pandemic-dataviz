@@ -50,8 +50,8 @@ class Pandemic():
         for i in range(self.population):
             random.shuffle(free_tiles)
             picked_spot = free_tiles.pop()
-            self.world.pos_matrix[picked_spot] = State.HEALTHY
-            self.nodes[picked_spot] = Node(State.HEALTHY, picked_spot)
+            self.world.pos_matrix[picked_spot] = State.UNAFFECTED
+            self.nodes[picked_spot] = Node(State.UNAFFECTED, picked_spot)
 
     def __getNumberState(self, state):
         numberState = 0
@@ -64,7 +64,7 @@ class Pandemic():
         self.dead.append(self.__getNumberState(State.DEAD))
         self.cured.append(self.__getNumberState(State.CURED))
         self.infected.append(self.__getNumberState(State.INFECTED))
-        self.healthy.append(self.__getNumberState(State.HEALTHY))
+        self.healthy.append(self.__getNumberState(State.UNAFFECTED))
 
     def displayStatisticsEpoch(self, epoch):
         print(("\n- - - - " + ColorsBook.BOLD + "Epoch: {:d}/{:d}").format(
@@ -111,7 +111,7 @@ class Pandemic():
                 for elem in neighbours:
                     if self.nodes[elem].state == State.CURED:
                         spread_ = random.random()
-                        if spread_ < self.infectProb/3:
+                        if spread_ < self.infectProb/5:
                             self.nodes[elem].state = State.INFECTED
                     else:
                         spread_ = random.random()
@@ -154,7 +154,7 @@ class Pandemic():
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
                       "Congrats, you survived the Pandemic !" + ColorsBook.ENDC)
                 break
-            if (self.__getNumberState(State.HEALTHY) + self.__getNumberState(State.CURED)) == 0:
+            if (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
                       "Oops, the whole goddamn population has been decimated !" + ColorsBook.ENDC)
                 break
