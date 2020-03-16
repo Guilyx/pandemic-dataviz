@@ -8,6 +8,7 @@
 '''
 
 import random
+import sys
 from copy import deepcopy
 from lib.node import Node
 from lib.state import State
@@ -44,11 +45,11 @@ class Pandemic():
         if epochs <= 0:
             print(ColorsBook.FAIL +
                   "Negative or Zero number of EPOCHS is not allowed, terminating..." + ColorsBook.ENDC)
-            exit()
+            sys.exit()
         if (infectProb or healProb or deathProb) < 0:
             print(ColorsBook.FAIL +
                   "Negative probabilities not allowed, terminating..." + ColorsBook.ENDC)
-            exit()
+            sys.exit()
 
         # Generates Nodes at random available spot
         for i in range(self.population):
