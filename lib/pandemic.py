@@ -97,6 +97,10 @@ class Pandemic():
             Node.virus_gravity += Node.time_infected * random.random()
             Node.has_grown = True
 
+    def __move(self):
+        # move nodes to random neighbour available position
+        pass
+
     def __evolve(self):
         for elem in list(self.nodes.keys()):
             current_node = self.nodes[elem]
