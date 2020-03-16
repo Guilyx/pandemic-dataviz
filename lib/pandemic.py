@@ -17,6 +17,7 @@ from lib.colors import ColorsBook
 class Pandemic():
     def __init__(self, epochs, population, infectProb, healProb, deathProb, World, n_infected=1, spreadRange=1):
         self.epochs = epochs
+        self.hardstop = 0
         self.spreadRange = spreadRange
         self.population = population
         self.infectProb = infectProb
@@ -143,6 +144,7 @@ class Pandemic():
                 self.__firstEpoch()
             else:
                 self.__genericEpoch()
+
             self.__evolve()
             self.__updateStatisticsEpoch()
 
@@ -153,8 +155,10 @@ class Pandemic():
             if (self.__getNumberState(State.INFECTED) == 0):
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
                       "Congrats, you survived the Pandemic !" + ColorsBook.ENDC)
+                self.hardstop = i
                 break
             if (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
                       "Oops, the whole goddamn population has been decimated !" + ColorsBook.ENDC)
+                self.hardstop = i
                 break
