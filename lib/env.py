@@ -69,7 +69,7 @@ class World():
                     stdout.write (ColorsBook.BOLD)
                     stdout.write('█')
                     stdout.write(ColorsBook.ENDC)
-                elif tile == State.HEALTHY:
+                elif tile == State.UNAFFECTED:
                     stdout.write(ColorsBook.OKGREEN + ColorsBook.BOLD)
                     stdout.write('o')
                     stdout.write(ColorsBook.ENDC)
