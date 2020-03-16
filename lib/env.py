@@ -48,7 +48,7 @@ class World():
 
      # display the world
     def display(self):
-        time.sleep(0.01)
+        time.sleep(0.05)
         os.system('clear')
         print('')
         carriage = 30 - self.L
@@ -63,7 +63,7 @@ class World():
                 if (j == 0):
                     if carriage > 0:
                         stdout.write(spaces)
-                if tile == State.FREE:
+                if tile == State.FREE or tile == State.DEAD:
                     stdout.write('.')
                 elif tile == State.WALL:
                     stdout.write (ColorsBook.BOLD)
