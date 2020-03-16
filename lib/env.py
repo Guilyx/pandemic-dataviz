@@ -48,7 +48,7 @@ class World():
 
      # display the world
     def display(self):
-        time.sleep(1)
+        time.sleep(0.01)
         os.system('clear')
         print('')
         carriage = 30 - self.L
