@@ -91,6 +91,7 @@ class Pandemic():
                ColorsBook.HEADER + ColorsBook.BOLD + "Deaths: {:d}\t").format(
             self.healthy[epoch], self.cured[epoch], self.infected[epoch], self.dead[epoch]) + ColorsBook.ENDC)
 
+
     def __virusGrowth(self, Node):
         if not(Node.has_grown):
             Node.time_infected += 1
@@ -99,7 +100,24 @@ class Pandemic():
 
     def __move(self):
         # move nodes to random neighbour available position
-        pass
+        free_neighbours = []
+        for elem in list(self.nodes.keys()):
+            if self.nodes[elem].state == State.DEAD:
+                pass
+            else:
+                should_move = random.random()
+                if should_move < 0.6:
+                    free_neighbours = self.nodes[elem].free_neighbours(
+                        self.spreadRange, self.world)
+
+                    if not free_neighbours:
+                        pass
+                    else:
+                        picked_neighbour = random.choice(free_neighbours)
+                        self.nodes[picked_neighbour] = self.nodes[elem]
+                        self.world.pos_matrix[elem] = State.FREE
+                        self.nodes.pop(elem)
+
 
     def __evolve(self):
         for elem in list(self.nodes.keys()):
@@ -109,7 +127,6 @@ class Pandemic():
                 self.world.pos_matrix[elem] = State.FREE
             else:
                 self.world.pos_matrix[elem] = node_state
-            
 
     def __firstEpoch(self):
         people = list(self.nodes.keys())
@@ -122,7 +139,6 @@ class Pandemic():
             neighbours = self.nodes[elem].neighbours(
                 self.spreadRange, self.world)
             if self.nodes[elem].state == State.INFECTED:
-
                 # Put down the virus evolution flag
                 self.nodes[elem].has_grown = False
 
@@ -156,25 +172,29 @@ class Pandemic():
                 if self.nodes[elem].state == State.INFECTED:
                     self.__virusGrowth(self.nodes[elem])
 
+                
+                # At EACH epoch, the probability of finding a cure rises.
+                # If cure is found : infection rate DRASTICALLY plummets.
+                # To Do.
+
     def displayTerminal(self, epoch):
         self.world.display()
         self.displayStatisticsEpoch(epoch)
-    
+
     def displayWorldHistory(self, epoch):
         self.worldHistory[epoch].display()
         self.displayStatisticsEpoch(epoch)
 
-        if epoch > self.hardstop and self.hardstop != 0:
+        if epoch == self.hardstop:
             if (self.__getNumberState(State.INFECTED) == 0):
                 print(ColorsBook.OKGREEN + ColorsBook.BOLD +
-                    "\nCongrats, you survived the Pandemic in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
+                      "\nCongrats, you survived the Pandemic in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
             elif (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 print(ColorsBook.FAIL + ColorsBook.BOLD +
-                    "\nOops, the whole goddamn population has been decimated in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
-
+                      "\nOops, the whole goddamn population has been decimated in " + str(self.hardstop) + " epochs !" + ColorsBook.ENDC)
 
     def spread(self, display=False):
-        for i in range(self.epochs):
+        for i in range(self.epochs+1):
             if i == 0:
                 self.__firstEpoch()
             else:
@@ -189,15 +209,31 @@ class Pandemic():
             world_ = deepcopy(self.world)
             self.worldHistory.append(world_)
 
+            self.__move()
+
             if (self.__getNumberState(State.INFECTED) == 0):
                 if display:
                     print(ColorsBook.OKGREEN + ColorsBook.BOLD +
-                        "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
-                self.hardstop = i
+                          "\nCongrats, you survived the Pandemic in " + str(i) + " epochs !" + ColorsBook.ENDC)
+                self.hardstop = i+1
                 break
             elif (self.__getNumberState(State.UNAFFECTED) + self.__getNumberState(State.CURED)) == 0:
                 if display:
                     print(ColorsBook.FAIL + ColorsBook.BOLD +
-                        "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
-                self.hardstop = i
+                          "\nOops, the whole goddamn population has been decimated in " + str(i) + " epochs !" + ColorsBook.ENDC)
+                self.hardstop = i+1
                 break
+
+    
+    def traffic(self):
+        for i in range(self.epochs+1):
+            if i == 0:
+                self.__firstEpoch()
+            else:
+                self.__move()
+            
+            self.__evolve()
+            
+            self.world.display()
+        
+        self.hardstop = i
