@@ -36,7 +36,7 @@ class Node():
             return [] 
 
         if (range_ == 1) :
-            successors = list(filter(lambda x: World.pos_matrix[x] != State.WALL and World.pos_matrix[x] != State.FREE, [i - 1, 
+            successors = list(filter(lambda x: World.pos_matrix[x] != State.WALL and World.pos_matrix[x] != State.FREE and World.pos_matrix[x] != State.DEAD, [i - 1, 
                                                                       i + 1, 
                                                                       i - World.L, 
                                                                       i + World.L, 
@@ -65,7 +65,7 @@ class Node():
             return [] 
 
         if (range_ == 1) :
-            successors = list(filter(lambda x: World.pos_matrix[x] == State.FREE, [i - 1, 
+            successors = list(filter(lambda x: World.pos_matrix[x] == State.FREE or World.pos_matrix[x] == State.DEAD, [i - 1, 
                                                                       i + 1, 
                                                                       i - World.L, 
                                                                       i + World.L, 
