@@ -17,11 +17,11 @@ from lib.env import World
 
 
 def stack_chart():
-    env = World(40, 20, 0.2)
+    env = World(40, 20, 0.1)
     max_pop = len(env.list_available_tiles())
-    pop = int(max_pop*0.8)
+    pop = int(max_pop*0.1)
 
-    deathProbability = 0.08
+    deathProbability = 0.04
     recoverProbability = 0.3
     infectedProbability = 0.75
 
@@ -37,14 +37,14 @@ def stack_chart():
     pal = ["#2ecc71", "#3498db", "#e74c3c", "#9b59b6"]
 
     try:
-        for i in range(4):
-            print("Simulation starting in " + str(5-i) + "...")
+        for i in range(3):
+            print("Simulation starting in " + str(3-i) + "...")
             time.sleep(1)
             system('clear')
     except KeyboardInterrupt:
         pass
     
-    for i in range(plague.hardstop+2):
+    for i in range(plague.hardstop):
         try:
             y = [plague.healthy[:i], plague.cured[:i], plague.infected[:i], plague.dead[:i]]          
             plt.stackplot(x[:i], y, labels=['Unaffected', 'Cured', 'Infected', 'Dead'], colors=pal, alpha=0.4)
@@ -56,7 +56,12 @@ def stack_chart():
             print("Exiting cleanly...")
             sys.exit()
     
-    plt.show()
+    while(True):
+        try:
+            plt.show()
+        except KeyboardInterrupt:
+            print("Exiting cleanly...")
+            sys.exit()
 
 if __name__ == "__main__":
     stack_chart()
