@@ -24,22 +24,20 @@ def move():
     plague = Pandemic(1000, pop, infectedProbability,
                       recoverProbability, deathProbability, env, 1)
     plague.world.display()
-    plague.traffic()
 
 def pandemic():
-    env = World(20, 20, 0.1)
+    env = World(50, 10, 0.3)
     max_pop = len(env.list_available_tiles())
     pop = int(max_pop*0.7)
 
-    deathProbability = 0.04
+    deathProbability = 0.5
     recoverProbability = 0.3
-    infectedProbability = 0.7
+    infectedProbability = 0.8
 
     plague = Pandemic(1000, pop, infectedProbability,
                       recoverProbability, deathProbability, env, 1)
-    plague.world.display()
-    plague.spread()
+    plague.show(True)
 
 
 if __name__ == "__main__":
-    move()
+    pandemic()
