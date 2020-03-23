@@ -17,19 +17,19 @@ from lib.env import World
 
 
 def stack_chart():
-    env = World(40, 20, 0.1)
+    env = World(50, 10, 0.25)
     max_pop = len(env.list_available_tiles())
-    pop = int(max_pop*0.1)
+    pop = int(max_pop*0.7)
 
     deathProbability = 0.04
-    recoverProbability = 0.3
+    recoverProbability = 0.2
     infectedProbability = 0.75
 
     epochs = 1000
 
     plague = Pandemic(epochs, pop, infectedProbability,
-                      recoverProbability, deathProbability, env, 1)
-    plague.spread()
+                      recoverProbability, deathProbability, env, 1, 1)
+    plague.spread(True)
 
     x = range(1, plague.hardstop+2)
     y = [plague.healthy, plague.cured, plague.infected, plague.dead]
@@ -37,6 +37,7 @@ def stack_chart():
     pal = ["#2ecc71", "#3498db", "#e74c3c", "#9b59b6"]
 
     try:
+        system('clear')
         for i in range(3):
             print("Simulation starting in " + str(3-i) + "...")
             time.sleep(1)
