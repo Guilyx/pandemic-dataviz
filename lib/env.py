@@ -48,10 +48,10 @@ class World():
 
      # display the world
     def display(self):
-        time.sleep(0.2)
+        time.sleep(0.5)
         os.system('clear')
         print('')
-        carriage = 30 - self.L
+        carriage = int(self.L/10)
         spaces = ' ' * carriage
         dashes = '-' * (carriage + int(self.L/2) - 1)
         stdout.write ("\033[;1m")
