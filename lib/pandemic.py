@@ -40,40 +40,59 @@ class Pandemic():
 
         free_tiles = World.list_available_tiles()
         free_tiles_n = len(free_tiles)
+
+        if not(isinstance(population, int)):
+            print(ColorsBook.WARNING +
+                  "Careful, population has to be an INT : forcing it at closest number" + ColorsBook.ENDC)
+            population = int(population)
+
         if population > free_tiles_n:
             print(ColorsBook.WARNING +
                   "Careful, population higher than allocated space : forcing it at maximum" + ColorsBook.ENDC)
-            self.population = free_tiles_n
+            population = free_tiles_n
 
         if population < 0:
             print(ColorsBook.WARNING +
                   "Careful, population can't be negative : forcing it at random number" + ColorsBook.ENDC)
-            self.population = random.randint(1, free_tiles_n)
+            population = random.randint(1, free_tiles_n)
+        
+        self.population = population
 
-        if epochs <= 0:
+        if epochs <= 0 or not(isinstance(epochs, int)):
             print(ColorsBook.FAIL +
                   "Negative or Zero number of EPOCHS is not allowed, terminating..." + ColorsBook.ENDC)
             sys.exit()
-        if (infectProb or healProb or deathProb) < 0:
+
+        if (infectProb or healProb or deathProb) < 0 or (infectProb or healProb or deathProb) > 1:
             print(ColorsBook.FAIL +
-                  "Negative probabilities not allowed, terminating..." + ColorsBook.ENDC)
+                  "Probabilities not included between [0, 1] interval, terminating..." + ColorsBook.ENDC)
             sys.exit()
 
         if (spreadRange > 1):
             print(ColorsBook.WARNING +
                   "Careful, spreading range unsupported, forcing it at 1" + ColorsBook.ENDC)
             self.spreadRange = 1
-        
-        if (spreadRange < 0):
+
+        elif (spreadRange < 0):
             print(ColorsBook.WARNING +
                   "Careful, spreading range unsupported, forcing it at 0" + ColorsBook.ENDC)
             self.spreadRange = 0
+
+        elif (not(isinstance(spreadRange, int))):
+            print(ColorsBook.WARNING +
+                  "Careful, spreading range unsupported (should be int), forcing to random choice between 0 and 1" + ColorsBook.ENDC)
+            self.spreadRange = round(random.random())
 
         if (n_infected < 0):
             print(ColorsBook.WARNING +
                   "Careful, initial number of infected can't be negative, forcing it at 1" + ColorsBook.ENDC)
             self.n_infected = 1
-        
+
+        elif (not(isinstance(n_infected, int))):
+            print(ColorsBook.WARNING +
+                  "Careful, initial number of infected must be int, forcing it at closest int" + ColorsBook.ENDC)
+            self.n_infected = int(n_infected)
+
         # Generates Nodes at random available spot
         for i in range(self.population):
             random.shuffle(free_tiles)
@@ -258,7 +277,8 @@ class Pandemic():
                 break
 
             if (self.dead[i] + self.cured[i] + self.healthy[i] + self.infected[i] != self.population):
-                print(ColorsBook.BOLD + ColorsBook.FAIL + "FAILURE : Number of nodes unmatched with initial population !!")
+                print(ColorsBook.BOLD + ColorsBook.FAIL +
+                      "FAILURE : Number of nodes unmatched with initial population !!")
 
         if self.hardstop == 0:
             self.hardstop = self.epochs
