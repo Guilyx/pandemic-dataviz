@@ -44,6 +44,12 @@ class Pandemic():
             print(ColorsBook.WARNING +
                   "Careful, population higher than allocated space : forcing it at maximum" + ColorsBook.ENDC)
             self.population = free_tiles_n
+
+        if population < 0:
+            print(ColorsBook.WARNING +
+                  "Careful, population can't be negative : forcing it at random number" + ColorsBook.ENDC)
+            self.population = random.randint(1, free_tiles_n)
+
         if epochs <= 0:
             print(ColorsBook.FAIL +
                   "Negative or Zero number of EPOCHS is not allowed, terminating..." + ColorsBook.ENDC)
@@ -53,6 +59,21 @@ class Pandemic():
                   "Negative probabilities not allowed, terminating..." + ColorsBook.ENDC)
             sys.exit()
 
+        if (spreadRange > 1):
+            print(ColorsBook.WARNING +
+                  "Careful, spreading range unsupported, forcing it at 1" + ColorsBook.ENDC)
+            self.spreadRange = 1
+        
+        if (spreadRange < 0):
+            print(ColorsBook.WARNING +
+                  "Careful, spreading range unsupported, forcing it at 0" + ColorsBook.ENDC)
+            self.spreadRange = 0
+
+        if (n_infected < 0):
+            print(ColorsBook.WARNING +
+                  "Careful, initial number of infected can't be negative, forcing it at 1" + ColorsBook.ENDC)
+            self.n_infected = 1
+        
         # Generates Nodes at random available spot
         for i in range(self.population):
             random.shuffle(free_tiles)

@@ -17,14 +17,19 @@ class Node():
         self.position = position
         self.time_infected = 0
         self.virus_gravity = 0
+        self.valid_node = True
         self.has_grown = False
 
         if state in State.ALLOWED_:
             pass
         else:
+            self.valid_node = False
             print(ColorsBook.WARNING +
                   "Careful, Node class built with wrong type for STATE variable" + ColorsBook.ENDC)
         
+        if position < 0:
+            self.valid_node = False
+            print(ColorsBook.WARNING + "Warning, wrong position as argument : can't be negative!")
 
     # Get Neighbours (degree : range)
     # range = 0 : direct neighbours, range = 1 : neighbours with diagonals etc...
