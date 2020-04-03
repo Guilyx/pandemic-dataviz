@@ -38,6 +38,8 @@ class World():
                 # the starting tile nor the goal tile 
                 if random() < P and not (i == 1 and j == 1) and not (i == H-2 and j == L-2):
                     self.pos_matrix[i*L+j] = State.WALL
+
+        self.initial_available = self.list_available_tiles()
     
     def list_available_tiles(self):
         available_tiles = []
