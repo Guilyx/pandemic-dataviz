@@ -1,8 +1,13 @@
 # Simulated Pandemic - Command Line
 
-Yet another ugly command line simulation of interesting situations. Tweak your parameters to create a pandemic situation and vizualise the evolution of the infection data (deaths, infections, curations and still unaffected). Add social distancing with walls to see the difference in spreading, add range to the virus or increase the rates for state alterations.
 
----- add image here ----
+<p align="center">
+    <!--- relative path means image/image.png instead of https://etc... -->
+    <img src="https://raw.githubusercontent.com/Guilyx/guilyx.github.io/master/images/projects/pandemic.gif" width="700" height="463">                           
+</a>
+
+
+Yet another ugly command line simulation of interesting situations. Tweak your parameters to create a pandemic situation and vizualise the evolution of the infection data (deaths, infections, curations and still unaffected). Add social distancing with walls to see the difference in spreading, add range to the virus or increase the rates for state alterations.
 
 ## Setup
 
